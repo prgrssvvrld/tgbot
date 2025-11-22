@@ -507,16 +507,16 @@ async def process_edit_status(message: types.Message, state: FSMContext):
     await state.clear()
     
     status_emoji = {
-        UserStatus.WORKING: "🟢",
-        UserStatus.VACATION: "🟡", 
-        UserStatus.SICK_LEAVE: "🔴"
+        UserStatus.WORKING: "🟢 Работает",
+        UserStatus.VACATION: "🟡 Отпуск", 
+        UserStatus.SICK_LEAVE: "🔴 Больничный"
     }
     
     await message.answer(
         f"✅ <b>Расписание обновлено!</b>\n\n"
         f"👤 Сотрудник: <b>{employee_fio}</b>\n"
         f"📅 Дата: <b>{selected_date.strftime('%d.%m.%Y')}</b>\n"
-        f"📊 Статус: {status_emoji[status]} {status.value}",
+        f"📊 Статус: {status_emoji[status]}",
         reply_markup=get_main_keyboard("master"),
         parse_mode="HTML"
     )
@@ -554,7 +554,14 @@ async def overall_calendar(message: types.Message):
             }
             
             emoji = status_emoji.get(status, "⚪")
-            status_text = "Работает" if status == UserStatus.WORKING else status.value
+            status_text = "Работает" 
+            if status == UserStatus.WORKING:
+                 status_text = "Работает" 
+            elif status == UserStatus.VACATION:
+                status_text = "Отпуск" 
+            elif status == UserStatus.SICK_LEAVE:
+                status_text = "Больничный" 
+            else: status.value
             
             response += f"{emoji} {employee.fio} - {status_text}\n"
         
@@ -664,16 +671,16 @@ async def handle_edit_status_selection(callback: types.CallbackQuery, state: FSM
     await state.clear()
     
     status_emoji = {
-        UserStatus.WORKING: "🟢",
-        UserStatus.VACATION: "🟡", 
-        UserStatus.SICK_LEAVE: "🔴"
+        UserStatus.WORKING: "🟢 Работает",
+        UserStatus.VACATION: "🟡 Отпуск", 
+        UserStatus.SICK_LEAVE: "🔴 Больничный"
     }
     
     await callback.message.edit_text(
         f"✅ <b>Расписание обновлено!</b>\n\n"
         f"👤 Сотрудник: <b>{employee_fio}</b>\n"
         f"📅 Дата: <b>{selected_date.strftime('%d.%m.%Y')}</b>\n"
-        f"📊 Статус: {status_emoji[status]} {status.value}",
+        f"📊 Статус: {status_emoji[status]}",
         parse_mode="HTML"
     )
     
