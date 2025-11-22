@@ -3,10 +3,16 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import datetime
 import enum
+import pytz
 
 from config import DATABASE_URL
 
 Base = declarative_base()
+
+krasnoyarsk_tz = pytz.timezone('Asia/Krasnoyarsk')
+
+def get_krasnoyarsk_time():
+    return datetime.datetime.now(krasnoyarsk_tz)
 
 class UserRole(enum.Enum):
     EMPLOYEE = "employee"
@@ -29,9 +35,8 @@ class User(Base):
     telegram_id = Column(Integer, unique=True, nullable=False)
     fio = Column(String(100), nullable=False)
     role = Column(Enum(UserRole), default=UserRole.EMPLOYEE)
-    shift = Column(String(50), default="Смена 1")
     status = Column(Enum(UserStatus), default=UserStatus.WORKING)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=get_krasnoyarsk_time)
 
 class Event(Base):
     __tablename__ = 'events'
@@ -41,7 +46,7 @@ class Event(Base):
     user_fio = Column(String(100), nullable=False)
     type = Column(Enum(EventType), nullable=False)
     description = Column(Text, nullable=False)
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, default=get_krasnoyarsk_time)
     is_resolved = Column(Boolean, default=False)
 
 class UserSchedule(Base):
@@ -51,7 +56,7 @@ class UserSchedule(Base):
     user_id = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
     status = Column(Enum(UserStatus), nullable=False)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=get_krasnoyarsk_time)
 
 engine = create_engine(DATABASE_URL.replace("+aiosqlite", ""), echo=True)
 SessionLocal = sessionmaker(bind=engine)
@@ -67,9 +72,9 @@ def get_db():
     finally:
         db.close()
 
-def create_user(telegram_id: int, fio: str, role: UserRole = UserRole.EMPLOYEE, shift: str = "Смена 1"):
+def create_user(telegram_id: int, fio: str, role: UserRole = UserRole.EMPLOYEE):
     db = get_db()
-    user = User(telegram_id=telegram_id, fio=fio, role=role, shift=shift)
+    user = User(telegram_id=telegram_id, fio=fio, role=role)
     db.add(user)
     db.commit()
     db.refresh(user)

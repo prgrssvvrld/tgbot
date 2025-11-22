@@ -6,6 +6,11 @@ from bot.database import get_user_by_telegram_id, create_event, EventType, get_a
 from bot.keyboards import get_main_keyboard, get_event_type_keyboard, get_cancel_keyboard, get_remove_keyboard
 from bot.states import EventStates
 import datetime
+from datetime import datetime
+import pytz
+
+krsk_tz = pytz.timezone('Asia/Krasnoyarsk')
+current_time = datetime.now(krsk_tz)
 
 async def create_event_start(message: types.Message, state: FSMContext):
     await message.answer("Выберите тип события:", reply_markup=get_event_type_keyboard())
@@ -72,7 +77,7 @@ async def notify_masters(bot, event_type: EventType, description: str, user_fio:
         f"📋 Тип: {event_type_text[event_type]}\n"
         f"👤 Сотрудник: {user_fio}\n"
         f"📝 Описание: {description}\n"
-        f"🕒 Время: {datetime.datetime.now().strftime('%H:%M %d.%m.%Y')}"
+        f"🕒 Время: {current_time.strftime('%H:%M %d.%m.%Y')}"
     )
     
     for master in masters:
