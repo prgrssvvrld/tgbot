@@ -312,7 +312,7 @@ async def handle_employee_selection(callback: types.CallbackQuery, state: FSMCon
         
         user = get_user_by_telegram_id(callback.from_user.id)
         await callback.message.answer(
-            "📅 <b>Управление расписанием</b>",
+            "-"*32,
             reply_markup=get_employee_management_keyboard()
         )
         
@@ -679,7 +679,7 @@ async def handle_edit_status_selection(callback: types.CallbackQuery, state: FSM
     
     user = get_user_by_telegram_id(callback.from_user.id)
     await callback.message.answer(
-        "📅 <b>Управление расписанием</b>",
+        "-"*32,
         reply_markup=get_employee_management_keyboard()
     )
 
@@ -690,7 +690,7 @@ async def handle_cancel_edit(callback: types.CallbackQuery, state: FSMContext):
     
     user = get_user_by_telegram_id(callback.from_user.id)
     await callback.message.answer(
-        "📅 <b>Управление расписанием</b>",
+        "-"*32,
         reply_markup=get_employee_management_keyboard()
     )
 def register_schedule_handlers(dp: Dispatcher):

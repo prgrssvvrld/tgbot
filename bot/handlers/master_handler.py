@@ -35,7 +35,7 @@ async def show_events_journal(message: types.Message):
                 "OTHER": "📝"
             }
             
-            local_time = event.timestamp + datetime.timedelta(hours=3)
+            local_time = event.timestamp + datetime.timedelta(hours=0)
             
             response += (
                 f"{event_type_emoji.get(event.type.value, '📌')} <b>{local_time.strftime('%H:%M')}</b>\n"
@@ -58,7 +58,7 @@ async def show_events_journal(message: types.Message):
                 "OTHER": "📝"
             }
             
-            local_time = event.timestamp + datetime.timedelta(hours=3)
+            local_time = event.timestamp + datetime.timedelta(hours=0)
             
             response += (
                 f"{event_type_emoji.get(event.type.value, '📌')} <b>{local_time.strftime('%H:%M')}</b>\n"
@@ -173,7 +173,6 @@ async def show_my_status(message: types.Message):
         f"👤 <b>Ваш статус:</b>\n\n"
         f"🏷️ ФИО: <b>{user.fio}</b>\n"
         f"🎯 Роль: <b>{role_text}</b>\n"
-        # f"📋 Смена: <b>{user.shift}</b>\n"
         f"📊 Статус: <b>{status_emoji.get(user.status.value, '⚪ Неизвестно')}</b>",
         parse_mode="HTML"
     )

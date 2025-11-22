@@ -69,9 +69,8 @@ def generate_pdf_report():
         table_data = [['Время', 'ФИО', 'Тип', 'Описание', 'Статус']]
         
         for event in events:
-            local_time = event.timestamp + datetime.timedelta(hours=3)
+            local_time = event.timestamp + datetime.timedelta(hours=0)
             time = local_time.strftime('%H:%M')
-            
             status = "Решено" if event.is_resolved else "Активно"  
             
             event_type_russian = {
