@@ -173,7 +173,7 @@ async def show_my_status(message: types.Message):
         f"👤 <b>Ваш статус:</b>\n\n"
         f"🏷️ ФИО: <b>{user.fio}</b>\n"
         f"🎯 Роль: <b>{role_text}</b>\n"
-        f"📋 Смена: <b>{user.shift}</b>\n"
+        # f"📋 Смена: <b>{user.shift}</b>\n"
         f"📊 Статус: <b>{status_emoji.get(user.status.value, '⚪ Неизвестно')}</b>",
         parse_mode="HTML"
     )
